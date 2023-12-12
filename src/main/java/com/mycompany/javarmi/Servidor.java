@@ -72,12 +72,11 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
 
     }
     
+    
+    
     public static void main(){
         try{
             new Servidor();
-            
-            
-        
         
         }catch(Exception e){
             System.out.println(e.getMessage());
