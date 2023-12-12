@@ -4,17 +4,17 @@
  */
 package com.mycompany.javarmi;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.time.LocalDate;
-import java.util.Date;
-
 /**
  *
  * @author Gustavo
  */
-public interface Cotacao extends Remote{
-    public double calcularMedia(int tipo, double[] valor) throws RemoteException, DadosInsuficientes;
+public class DadosInsuficientes extends Exception{
 
-
+    public DadosInsuficientes() {
+        super();
+        System.out.println("\n DADOS DE COTACAO INSUFICIENTES!\n OS DADOS PRECISAM TER MAIS QUE 3 VALORES DE COTACAO!\n");
+    }
+    
+    
+   
 }

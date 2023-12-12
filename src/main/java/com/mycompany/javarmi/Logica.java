@@ -11,17 +11,4 @@ package com.mycompany.javarmi;
 public class Logica {
 
     
-    
-    
-    public void logica() {
-        Cotacao dia1 = new Cotacao();
-        Cotacao dia2 = new Cotacao();
-        Cotacao dia3 = new Cotacao();
-        Cotacao dia4 = new Cotacao();
-        
-        
-        
-        
-    }
-
 }
