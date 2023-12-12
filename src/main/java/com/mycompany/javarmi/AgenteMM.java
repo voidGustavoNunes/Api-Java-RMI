@@ -6,6 +6,9 @@ package com.mycompany.javarmi;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,29 +17,41 @@ import java.rmi.RemoteException;
 public class AgenteMM { //INDICA CORRETAMENETE A TENDENCIA DE EVOLUCAO DA COTACAO DO DOLAR EM TERMOS PERCENTUAIS
 
     Servidor servidor;
+    List<Economia> ecoList = new ArrayList<>();
 //LOGICA
+    
+    public void adicionaEconomia(Economia eco){
+        ecoList.add(eco);
+    }
+
+    public List<Economia> getEcoList() {
+        return ecoList;
+    }
 
     public AgenteMM(Servidor servidor) {
         this.servidor = servidor;
     }
 
-    public double retornaValor(double[] valores) throws RemoteException, DadosInsuficientes { //FAZER A VERIFICACAO NO FRONTEND PARA QUE SO CHAME ESSA FUNCAO CASO TENHA 9 COTACOES
+    public AgenteMM() {
+    }
+
+    public double retornaValor() throws RemoteException, DadosInsuficientes { //FAZER A VERIFICACAO NO FRONTEND PARA QUE SO CHAME ESSA FUNCAO CASO TENHA 9 COTACOES
         double mediaTresUltimosValores;
         double mediaSeisUltimosValores;
         double mediaNoveUltimosValores;
+        double tresMenosCotacaoValores;
         double valor = 0;
-
-        int tamanho = valores.length;
+        int i = 0;
 
         try {
             servidor = new Servidor();
-
         } catch (Exception e) {
             e.getMessage();
         }
-        mediaTresUltimosValores = servidor.calcularMedia(1, valores);
-        mediaSeisUltimosValores = servidor.calcularMedia(2, valores);
-        mediaNoveUltimosValores = servidor.calcularMedia(3, valores);
+        mediaTresUltimosValores = servidor.calcularMedia(1, ecoList);
+        mediaSeisUltimosValores = servidor.calcularMedia(2, ecoList);
+        mediaNoveUltimosValores = servidor.calcularMedia(3, ecoList);
+        tresMenosCotacaoValores = servidor.calcularMedia(4, ecoList);
 
         if ((!(mediaSeisUltimosValores > mediaTresUltimosValores)) && (!(mediaNoveUltimosValores > mediaTresUltimosValores))) {
             valor = 1.00;
@@ -53,10 +68,10 @@ public class AgenteMM { //INDICA CORRETAMENETE A TENDENCIA DE EVOLUCAO DA COTACA
         return valor;
     }
 
-    public String recomendacaoParaUsuario(double[] valores) throws RemoteException, DadosInsuficientes {
+    public String recomendacaoParaUsuario() throws RemoteException, DadosInsuficientes {
         double valor;
 
-        valor = retornaValor(valores);
+        valor = retornaValor();
 
         String resultado = null;
 

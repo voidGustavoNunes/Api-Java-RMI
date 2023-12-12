@@ -4,6 +4,25 @@
  */
 package view;
 
+import com.mycompany.javarmi.AgenteMM;
+import com.mycompany.javarmi.Cotacao;
+import com.mycompany.javarmi.DadosInsuficientes;
+import com.mycompany.javarmi.Economia;
+import com.mycompany.javarmi.Servidor;
+import java.io.IOException;
+import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -11,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Gustavo
  */
 public class DialogJanelaPrincipal extends javax.swing.JDialog {
-
+    AgenteMM agente = new AgenteMM();
     /**
      * Creates new form NewJDialog
      */
@@ -32,18 +51,18 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButtonConfirmar = new javax.swing.JButton();
-        jFormattedTextFieldData = new javax.swing.JFormattedTextField();
+        txtDataInput = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTableCotacoes = new javax.swing.JTable();
+        tbCotacao = new javax.swing.JTable();
         jButtonAdd = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jComboBoxMedia = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPaneResultado = new javax.swing.JTextPane();
+        txtResultado = new javax.swing.JTextPane();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jFormattedTextFieldCotacao = new javax.swing.JFormattedTextField();
+        txtCotInput = new javax.swing.JFormattedTextField();
 
         jTextField1.setText("jTextField1");
 
@@ -59,14 +78,14 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         });
 
         try {
-            jFormattedTextFieldData.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/2023")));
+            txtDataInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/2023")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Cotações:"));
 
-        jTableCotacoes.setModel(new javax.swing.table.DefaultTableModel(
+        tbCotacao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -76,8 +95,16 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
             new String [] {
                 "Data", "Cotacao", "M3", "M6", "M9", "M3 - Cotacao"
             }
-        ));
-        jScrollPane1.setViewportView(jTableCotacoes);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbCotacao);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -96,22 +123,28 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         );
 
         jButtonAdd.setText("Adicionar");
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Media:");
 
         jComboBoxMedia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3 Dias Anteriores", "6 Dias Anteriores", "9 Dias Anteriores" }));
 
-        jScrollPane2.setViewportView(jTextPaneResultado);
+        jScrollPane2.setViewportView(txtResultado);
 
         jLabel3.setText("Resultado:");
 
         jLabel4.setText("Data:");
 
         try {
-            jFormattedTextFieldCotacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#,####")));
+            txtCotInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#.####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtCotInput.setText(" .    ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,17 +152,17 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel3)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButtonConfirmar))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
@@ -141,10 +174,10 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jFormattedTextFieldCotacao, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jComboBoxMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jFormattedTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(txtDataInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAdd)
                 .addGap(39, 39, 39))
@@ -155,12 +188,11 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jFormattedTextFieldCotacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(13, 13, 13)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jFormattedTextFieldData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDataInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
@@ -181,41 +213,101 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private double[] retornaDados(int indice) {
-
-        DefaultTableModel modelo = (DefaultTableModel) jTableCotacoes.getModel();
-        int rowCount = modelo.getRowCount();
-        double[] valoresIndices = null;
-
-        double valor = 0;
-
-        // Encontra os três, seis ou nove (depende do q vc vai passar no indice) inseridos na segunda coluna
-        if (rowCount >= indice) {
-            int count = 0;
-            for (int i = rowCount - 1; i >= 0 && count < indice; i--) {
-                valor = (double) modelo.getValueAt(i, 1);
-                if (valor != 0) {
-                    valoresIndices[count] = i;
-                    count++;
-                }
-                else{
-                    System.out.println("\n\n ===== Coluna 1 linha " + i + "possui valor 0, incompatível! ======\n" );
-                }
-            }
-        }
-        return valoresIndices;
-    }
+//    private double[] retornaDados(int indice) {
+//
+//        DefaultTableModel modelo = (DefaultTableModel) jTableCotacoes.getModel();
+//        int rowCount = modelo.getRowCount();
+//        double[] valoresIndices = null;
+//
+//        double valor = 0;
+//
+//        // Encontra os três, seis ou nove (depende do q vc vai passar no indice) inseridos na segunda coluna
+//        if (rowCount >= indice) {
+//            int count = 0;
+//            for (int i = rowCount - 1; i >= 0 && count < indice; i--) {
+//                valor = (double) modelo.getValueAt(i, 1);
+//                if (valor != 0) {
+//                    valoresIndices[count] = i;
+//                    count++;
+//                }
+//                else{
+//                    System.out.println("\n\n ===== Coluna 1 linha " + i + "possui valor 0, incompatível! ======\n" );
+//                }
+//            }
+//        }
+//        return valoresIndices;
+//    }
 
 
     private void jButtonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarActionPerformed
-        
-        
-
-
-
-
+        try {
+            String recomenda = agente.recomendacaoParaUsuario();
+            txtResultado.setText(recomenda);
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        } catch (DadosInsuficientes ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        // TODO add your handling code here:
+        double cota = 0;
+        try {
+            cota = Double.parseDouble(txtCotInput.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao converter para double: " + e.getMessage());
+        }
+
+        String dtVindo = txtDataInput.getText();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataFormatada = null;
+        try {
+            dataFormatada = formato.parse(dtVindo);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+        
+        if (!(txtDataInput.equals(null)||txtDataInput.equals(""))&& !(txtCotInput.equals("")||txtCotInput.equals(null))) {
+            Economia eco = new Economia(dataFormatada, cota);
+            agente.adicionaEconomia(eco);
+            carregarDados();
+        } else {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos!");
+        }
+    }//GEN-LAST:event_jButtonAddActionPerformed
+
+    public static DefaultTableModel defaultTableCenter(JTable tabela) {
+        DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
+        tableModel.setRowCount(0);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tabela.setDefaultRenderer(Object.class, centerRenderer);
+        
+        return tableModel;
+    }
+     
+     private void carregarDados() {
+        try {
+            agente.retornaValor();
+                    try {
+                        DefaultTableModel tableModel = defaultTableCenter(tbCotacao);
+                        
+                        for (Economia economia : agente.getEcoList()) {
+                            tableModel.addRow(economia.toArray());
+                        }
+                        tbCotacao.setModel(tableModel);
+//            tbCotacao.setShowVerticalLines(false);
+                    } catch (ParseException  ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO ao LISTAR Economia Cotação", JOptionPane.ERROR_MESSAGE  );
+                    }
+        } catch (RemoteException  ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage()  );
+        } catch (DadosInsuficientes ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage()  );
+        } 
+    }
     /**
      * @param args the command line arguments
      */
@@ -263,8 +355,6 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonConfirmar;
     private javax.swing.JComboBox<String> jComboBoxMedia;
-    private javax.swing.JFormattedTextField jFormattedTextFieldCotacao;
-    private javax.swing.JFormattedTextField jFormattedTextFieldData;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -272,8 +362,10 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTableCotacoes;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextPane jTextPaneResultado;
+    private javax.swing.JTable tbCotacao;
+    private javax.swing.JFormattedTextField txtCotInput;
+    private javax.swing.JFormattedTextField txtDataInput;
+    private javax.swing.JTextPane txtResultado;
     // End of variables declaration//GEN-END:variables
 }

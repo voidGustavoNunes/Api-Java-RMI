@@ -32,20 +32,21 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="jButtonConfirmar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -60,10 +61,10 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jFormattedTextFieldCotacao" alignment="0" min="-2" pref="126" max="-2" attributes="0"/>
+                          <Component id="txtCotInput" alignment="0" min="-2" pref="126" max="-2" attributes="0"/>
                           <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                               <Component id="jComboBoxMedia" min="-2" max="-2" attributes="0"/>
-                              <Component id="jFormattedTextFieldData" min="-2" pref="126" max="-2" attributes="0"/>
+                              <Component id="txtDataInput" min="-2" pref="126" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -80,14 +81,13 @@
               <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jFormattedTextFieldCotacao" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCotInput" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jFormattedTextFieldData" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtDataInput" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
@@ -124,7 +124,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConfirmarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldData">
+    <Component class="javax.swing.JFormattedTextField" name="txtDataInput">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
           <Format format="##/##/2023" subtype="-1" type="5"/>
@@ -167,16 +167,16 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTableCotacoes">
+            <Component class="javax.swing.JTable" name="tbCotacao">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="4">
-                    <Column editable="true" title="Data" type="java.lang.Object"/>
-                    <Column editable="true" title="Cotacao" type="java.lang.Object"/>
-                    <Column editable="true" title="M3" type="java.lang.Object"/>
-                    <Column editable="true" title="M6" type="java.lang.Object"/>
-                    <Column editable="true" title="M9" type="java.lang.Object"/>
-                    <Column editable="true" title="M3 - Cotacao" type="java.lang.Object"/>
+                    <Column editable="true" title="Data" type="java.lang.String"/>
+                    <Column editable="true" title="Cotacao" type="java.lang.Double"/>
+                    <Column editable="true" title="M3" type="java.lang.Double"/>
+                    <Column editable="true" title="M6" type="java.lang.Double"/>
+                    <Column editable="true" title="M9" type="java.lang.Double"/>
+                    <Column editable="true" title="M3 - Cotacao" type="java.lang.Double"/>
                   </Table>
                 </Property>
               </Properties>
@@ -189,6 +189,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Adicionar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
@@ -216,7 +219,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextPane" name="jTextPaneResultado">
+        <Component class="javax.swing.JTextPane" name="txtResultado">
         </Component>
       </SubComponents>
     </Container>
@@ -230,11 +233,12 @@
         <Property name="text" type="java.lang.String" value="Data:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldCotacao">
+    <Component class="javax.swing.JFormattedTextField" name="txtCotInput">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-          <Format format="#,####" subtype="-1" type="5"/>
+          <Format format="#.####" subtype="-1" type="5"/>
         </Property>
+        <Property name="text" type="java.lang.String" value=" .    "/>
       </Properties>
     </Component>
   </SubComponents>

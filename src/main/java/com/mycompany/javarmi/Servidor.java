@@ -8,6 +8,8 @@ import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.server.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -33,42 +35,56 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
     }
 
     @Override
-    public synchronized double calcularMedia(int tipo, double[] valor) throws RemoteException, DadosInsuficientes { // o usuario vai passar o tipo e os valores do dolar
+    public synchronized double calcularMedia(int tipo, List<Economia> ecoList) throws RemoteException, DadosInsuficientes { // o usuario vai passar o tipo e os valores do dolar
         double[] tresUltimosValores = null;
         double[] seisUltimosValores = null;
         double[] noveUltimosValores = null;
         double media = 0;
         double soma = 0;
 
-        int tamanho = valor.length;
+        int tamanho = ecoList.size();
         if (tamanho >= 3) {
             switch (tipo) {
-                case 0:
+                case 1:
                     for (int i = tamanho - 3, j = 0; i < tamanho; i++, j++) {
-                        tresUltimosValores[i] = valor[j];
-                        soma += valor[j];
+                        tresUltimosValores[i] = ecoList.get(j).cotacao;
+                        soma += ecoList.get(j).cotacao;
                         media = soma / 3;
+                        ecoList.get(j).setM3(media);
                     }
                     break;
-                case 1:
+                case 2:
                     for (int i = tamanho - 6, j = 0; i < tamanho; i++, j++) {
-                        seisUltimosValores[i] = valor[j];
-                        soma += valor[j];
+                        seisUltimosValores[i] = ecoList.get(j).cotacao;
+                        soma += ecoList.get(j).cotacao;
                         media = soma / 6;
+                        ecoList.get(j).setM6(media);
                     }
                     break;
 
-                case 2:
-                    for (int i = tamanho - 3, j = 0; i < tamanho; i++, j++) {
-                        noveUltimosValores[i] = valor[j];
-                        soma += valor[j];
+                case 3:
+                    for (int i = tamanho - 9, j = 0; i < tamanho; i++, j++) {
+                        noveUltimosValores[i] = ecoList.get(j).cotacao;
+                        soma += ecoList.get(j).cotacao;
                         media = soma / 9;
+                        ecoList.get(j).setM9(media);
+                    }
+                    break;
+
+                case 4:
+                    for (int i = tamanho - 9, j = 0; i < tamanho; i++, j++) {
+                        noveUltimosValores[i] = ecoList.get(j).cotacao;
+                        soma += ecoList.get(j).cotacao;
+                        media = soma / 3;
+                        double resulta = media - ecoList.get(j).cotacao;
+                        ecoList.get(j).setM3Cotacao(resulta);
                     }
                     break;
             }
             return media;
         }
-        throw new DadosInsuficientes();
+//        throw new DadosInsuficientes();
+        return 0;
 
     }
     

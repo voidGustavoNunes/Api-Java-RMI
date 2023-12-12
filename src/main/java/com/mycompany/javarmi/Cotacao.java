@@ -6,15 +6,15 @@ package com.mycompany.javarmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
  * @author Gustavo
  */
 public interface Cotacao extends Remote{
-    public double calcularMedia(int tipo, double[] valor) throws RemoteException, DadosInsuficientes;
 
+    public double calcularMedia(int tipo, List<Economia> eco) throws RemoteException, DadosInsuficientes;
 
 }
