@@ -268,11 +268,12 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         }
         
         int tipo = 0;
-        if(boxTipoMedia.getSelectedIndex() == 0){tipo = 0;}
-        if(boxTipoMedia.getSelectedIndex() == 1){tipo = 1;}
-        if(boxTipoMedia.getSelectedIndex() == 2){tipo = 2;}
-        if(boxTipoMedia.getSelectedIndex() == 3){tipo = 3;}
+        if(boxTipoMedia.getSelectedIndex() == 0){tipo = 1;}
+        if(boxTipoMedia.getSelectedIndex() == 1){tipo = 2;}
+        if(boxTipoMedia.getSelectedIndex() == 2){tipo = 3;}
+        if(boxTipoMedia.getSelectedIndex() == 3){tipo = 4;}
         agente.setTipoMedia(tipo);
+        System.out.println(tipo);
         
         if (!(txtDataInput.equals(null)||txtDataInput.equals(""))&& !(txtCotInput.equals("")||txtCotInput.equals(null))) {
             Economia eco = new Economia(dataFormatada, cota);
