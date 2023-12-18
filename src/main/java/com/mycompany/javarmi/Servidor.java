@@ -54,18 +54,18 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
 
     @Override
     public synchronized double calcularMedia(int tipo, List<Economia> ecoList) throws RemoteException, DadosInsuficientes { // o usuario vai passar o tipo e os valores do dolar
-        double[] tresUltimosValores = new double[9];
-        double[] seisUltimosValores = new double[6];
-        double[] noveUltimosValores = new double[3];
-        double[] tresMenosCotacao = new double[3];
+//        double[] tresUltimosValores = new double[9];
+//        double[] seisUltimosValores = new double[6];
+//        double[] noveUltimosValores = new double[3];
+//        double[] tresMenosCotacao = new double[3];
         double media = 0;
         double soma = 0;
 
         int tamanho = ecoList.size();
-        if (tamanho >= 3) {
+        if (tamanho > 3) {
             switch (tipo) {
                 case 1:
-                    for (int i = tamanho - 3, j = 0; i < tamanho && j < tamanho; i++, j++) {
+                    for (int i = tamanho, j = 0; i < (tamanho-3) && j < tamanho; i--, j++) {
 //                        tresUltimosValores[i] = ecoList.get(j).cotacao;
                         soma += ecoList.get(j).cotacao;
                         media = soma / 3;
@@ -73,8 +73,8 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
                     }
                     break;
                 case 2:
-                    if (tamanho >= 6) {
-                        for (int i = tamanho - 6, j = 0; i < tamanho && j < tamanho; i++, j++) {
+                    if (tamanho > 6) {
+                        for (int i = tamanho, j = 0; i < (tamanho-6) && j < tamanho; i--, j++) {
 //                            seisUltimosValores[i] = ecoList.get(j).cotacao;
                             soma += ecoList.get(j).cotacao;
                             media = soma / 6;
@@ -84,8 +84,8 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
                     break;
 
                 case 3:
-                    if (tamanho >= 9) {
-                        for (int i = tamanho - 9, j = 0; i < tamanho && j < tamanho; i++, j++) {
+                    if (tamanho > 9) {
+                        for (int i = tamanho, j = 0; i < (tamanho-9) && j < tamanho; i--, j++) {
 //                            noveUltimosValores[i] = ecoList.get(j).cotacao;
                             soma += ecoList.get(j).cotacao;
                             media = soma / 9;
@@ -96,7 +96,7 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
 
                 case 4:
                     if (tamanho >= 9) {
-                        for (int i = tamanho - 9, j = 0; i < tamanho && j < tamanho; i++, j++) {
+                        for (int i = tamanho, j = 0; i < (tamanho-9) && j < tamanho; i--, j++) {
 //                            tresMenosCotacao[i] = ecoList.get(j).cotacao;
                             double resulta = ecoList.get(j).m3 - ecoList.get(j).cotacao;
                             ecoList.get(j).setM3Cotacao(resulta);
