@@ -4,8 +4,10 @@
  */
 package com.mycompany.javarmi;
 
+import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.server.*;
 import java.util.Date;
@@ -16,29 +18,31 @@ import java.util.List;
  * @author Gustavo
  */
 public class Servidor extends UnicastRemoteObject implements Cotacao {
-    
-    public Servidor() throws RemoteException , DadosInsuficientes{
+
+    public Servidor() throws RemoteException, DadosInsuficientes, MalformedURLException {
         super();
-        try{
-        
+        try {
+            Registry registry = LocateRegistry.getRegistry(1099);
+            // Se chegar aqui, o registro já existe, não precisa criar outro
+
             System.setProperty("java.rmi.server.hostname", "192.168.15.5");
+
+        } catch (Exception e) {
             LocateRegistry.createRegistry(1099);
             Cotacao co = new Servidor();
-            
+            System.setProperty("java.rmi.server.hostname", "192.168.15.5");
+
             Naming.rebind("SERVIDOR_COTACAO", (Remote) co);
-        
-        }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        
 
     }
 
     @Override
     public synchronized double calcularMedia(int tipo, List<Economia> ecoList) throws RemoteException, DadosInsuficientes { // o usuario vai passar o tipo e os valores do dolar
-        double[] tresUltimosValores = new double[9];
+        double[] tresUltimosValores = new double[3];
         double[] seisUltimosValores = new double[6];
-        double[] noveUltimosValores = new double[3];
+        double[] noveUltimosValores = new double[9];
         double media = 0;
         double soma = 0;
 
@@ -46,31 +50,35 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
         if (tamanho >= 3) {
             switch (tipo) {
                 case 1:
-                    for (int i = tamanho - 3, j = 0; i < tamanho && j < tamanho; i++, j++) {
-                        tresUltimosValores[i] = ecoList.get(j).cotacao;
-                        soma += ecoList.get(j).cotacao;
-                        media = soma / 3;
-                        ecoList.get(j).setM3(media);
+                    for (int i = tamanho - 3; i < tamanho; i++) {
+                        soma += ecoList.get(i).cotacao;
+                    }
+                    media = soma / 3;
+                    for (int i = tamanho - 3; i < tamanho; i++) {
+                        ecoList.get(i).setM3(media);
                     }
                     break;
+
                 case 2:
                     if (tamanho >= 6) {
-                        for (int i = tamanho - 6, j = 0; i < tamanho && j < tamanho; i++, j++) {
-                            seisUltimosValores[i] = ecoList.get(j).cotacao;
-                            soma += ecoList.get(j).cotacao;
-                            media = soma / 6;
-                            ecoList.get(j).setM6(media);
+                        for (int i = tamanho - 6; i < tamanho; i++) {
+                            soma += ecoList.get(i).cotacao;
+                        }
+                        media = soma / 6;
+                        for (int i = tamanho - 6; i < tamanho; i++) {
+                            ecoList.get(i).setM6(media);
                         }
                     }
                     break;
 
                 case 3:
                     if (tamanho >= 9) {
-                        for (int i = tamanho - 9, j = 0; i < tamanho && j < tamanho; i++, j++) {
-                            noveUltimosValores[i] = ecoList.get(j).cotacao;
-                            soma += ecoList.get(j).cotacao;
-                            media = soma / 9;
-                            ecoList.get(j).setM9(media);
+                        for (int i = tamanho - 9; i < tamanho; i++) {
+                            soma += ecoList.get(i).cotacao;
+                        }
+                        media = soma / 9;
+                        for (int i = tamanho - 9; i < tamanho; i++) {
+                            ecoList.get(i).setM9(media);
                         }
                     }
                     break;
@@ -93,19 +101,17 @@ public class Servidor extends UnicastRemoteObject implements Cotacao {
         return 0;
 
     }
-    
-    
-    
-    public static void main(){
-        try{
+
+    public static void main() {
+        try {
             new Servidor();
-        
-        }catch(Exception e){
+            System.out.println("\n\n SERVIDOR INICIADO \n\n");
+
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return;
         }
-    
-    
+
     }
 
 }

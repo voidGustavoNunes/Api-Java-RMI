@@ -7,7 +7,6 @@ package com.mycompany.javarmi;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -101,21 +100,11 @@ public class AgenteMM { //INDICA CORRETAMENETE A TENDENCIA DE EVOLUCAO DA COTACA
         return resultado;
     }
 
-    public double calculaM3Cotacao(double cotacao1, double cotacao2){ //AINDA NAO SEI COMO FAZ
-        double cotacaoFinal = 0;
-        
-        
-        
-        
-        
-    
-        return cotacaoFinal;
-    }
-    
     public static void main() {
         try {
             Cotacao cotacao = (Cotacao) Naming.lookup("rmi://192.168.15.5:1099/SERVIDOR_COTACAO");
-
+            
+            System.out.println("\n\n CLIENTE INICIADO \n\n");
             //REALIZAR A LOGICA PARA CALCULAR A MEDIA E MOSTRAR PARA O USUARIO
         } catch (Exception e) {
             System.out.println(e.getMessage());

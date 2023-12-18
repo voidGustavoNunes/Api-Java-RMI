@@ -5,16 +5,14 @@
 package view;
 
 import com.mycompany.javarmi.AgenteMM;
-import com.mycompany.javarmi.Cotacao;
 import com.mycompany.javarmi.DadosInsuficientes;
 import com.mycompany.javarmi.Economia;
 import com.mycompany.javarmi.Servidor;
-import java.io.IOException;
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,11 +28,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Gustavo
  */
 public class DialogJanelaPrincipal extends javax.swing.JDialog {
+
+    Servidor servidor = new Servidor();
     AgenteMM agente = new AgenteMM();
+
+
     /**
      * Creates new form NewJDialog
      */
-    public DialogJanelaPrincipal(java.awt.Frame parent, boolean modal) {
+    public DialogJanelaPrincipal(java.awt.Frame parent, boolean modal) throws RemoteException, DadosInsuficientes, MalformedURLException {
         super(parent, modal);
         initComponents();
     }
@@ -63,6 +65,7 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtCotInput = new javax.swing.JFormattedTextField();
+        jButtonMockar = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -112,13 +115,13 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -145,41 +148,46 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
             ex.printStackTrace();
         }
 
+        jButtonMockar.setText("Mockar");
+        jButtonMockar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonMockarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonConfirmar))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonConfirmar)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(boxTipoMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtDataInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonAdd)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(boxTipoMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDataInput, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonAdd)
+                    .addComponent(jButtonMockar))
                 .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,24 +195,25 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
+                    .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonMockar))
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDataInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(boxTipoMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButtonAdd)))
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(boxTipoMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButtonAdd))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jButtonConfirmar)
-                .addGap(1, 1, 1)
-                .addComponent(jLabel3)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jButtonConfirmar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -237,15 +246,62 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
 //        return valoresIndices;
 //    }
 
-
     private void jButtonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarActionPerformed
-        try {
-            String recomenda = agente.recomendacaoParaUsuario();
-            txtResultado.setText(recomenda);
-        } catch (RemoteException ex) {
-            JOptionPane.showMessageDialog(this, ex);
-        } catch (DadosInsuficientes ex) {
-            JOptionPane.showMessageDialog(this, ex);
+        boxTipoMedia.getSelectedIndex();
+
+        int tipo = 0;
+        int tamanhoMedia = 0;
+        int coluna = 0;
+        if (boxTipoMedia.getSelectedIndex() == 0) {
+            tipo = 1;
+            tamanhoMedia = 3;
+            coluna = 2;
+        }
+        if (boxTipoMedia.getSelectedIndex() == 1) {
+            tipo = 2;
+            tamanhoMedia = 6;
+            coluna = 3;
+        }
+        if (boxTipoMedia.getSelectedIndex() == 2) {
+            tipo = 3;
+            tamanhoMedia = 9;
+            coluna = 4;
+        }
+        if (boxTipoMedia.getSelectedIndex() == 3) { //TRATAR
+            tipo = 4;
+            coluna = 5;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) tbCotacao.getModel();
+        int tamanho = model.getRowCount();
+        int colunaCotacao = 1;
+        double valorMedia = 0;
+        
+        if (tamanho < 3) {
+            JOptionPane.showMessageDialog(this, "Não há linhas suficientes para calcular a média.");
+        } else {
+
+            for (int i = 0; i < tamanho - tipo + 1; i++) {
+                double soma = 0;
+                try {
+                    valorMedia = servidor.calcularMedia(tipo, agente.getEcoList());
+                } catch (RemoteException ex) {
+                    Logger.getLogger(DialogJanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (DadosInsuficientes ex) {
+                    Logger.getLogger(DialogJanelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                tbCotacao.setValueAt(valorMedia,  coluna, i + tamanhoMedia);
+            
+            }
+
+            try {
+                String recomenda = agente.recomendacaoParaUsuario();
+                txtResultado.setText(recomenda);
+            } catch (RemoteException ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            } catch (DadosInsuficientes ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
         }
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
@@ -266,15 +322,23 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, ex);
         }
-        
+
         int tipo = 0;
-        if(boxTipoMedia.getSelectedIndex() == 0){tipo = 0;}
-        if(boxTipoMedia.getSelectedIndex() == 1){tipo = 1;}
-        if(boxTipoMedia.getSelectedIndex() == 2){tipo = 2;}
-        if(boxTipoMedia.getSelectedIndex() == 3){tipo = 3;}
+        if (boxTipoMedia.getSelectedIndex() == 0) {
+            tipo = 0;
+        }
+        if (boxTipoMedia.getSelectedIndex() == 1) {
+            tipo = 1;
+        }
+        if (boxTipoMedia.getSelectedIndex() == 2) {
+            tipo = 2;
+        }
+        if (boxTipoMedia.getSelectedIndex() == 3) {
+            tipo = 3;
+        }
         agente.setTipoMedia(tipo);
-        
-        if (!(txtDataInput.equals(null)||txtDataInput.equals(""))&& !(txtCotInput.equals("")||txtCotInput.equals(null))) {
+
+        if (!(txtDataInput.equals(null) || txtDataInput.equals("")) && !(txtCotInput.equals("") || txtCotInput.equals(null))) {
             Economia eco = new Economia(dataFormatada, cota);
             agente.adicionaEconomia(eco);
             carregarDados();
@@ -283,37 +347,74 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonAddActionPerformed
 
+    private void jButtonMockarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMockarActionPerformed
+        mockar();
+
+    }//GEN-LAST:event_jButtonMockarActionPerformed
+
+    public void mockar() {
+        // Dados a serem adicionados
+        String[] datas = {
+            "31/08/2023", "01/09/2023", "04/09/2023", "05/09/2023",
+            "06/09/2023", "08/09/2023", "11/09/2023", "12/09/2023",
+            "13/09/2023", "14/09/2023", "15/09/2023"
+        };
+        double[] cotacoes = {
+            4.9213, 4.9312, 4.9170, 4.9699, 4.9756, 4.9829,
+            4.9360, 4.9499, 4.9165, 4.8745, 4.8683
+        };
+
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
+        for (int i = 0; i < datas.length; i++) {
+            String dtVindo = datas[i];
+            double cotacao = cotacoes[i];
+
+            try {
+                Date dataFormatada = formato.parse(dtVindo);
+                Economia eco = new Economia(dataFormatada, cotacao);
+                agente.adicionaEconomia(eco);
+                carregarDados();
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+        }
+    }
+
     public static DefaultTableModel defaultTableCenter(JTable tabela) {
         DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
         tableModel.setRowCount(0);
-        
+
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        tabela.setDefaultRenderer(Object.class, centerRenderer);
-        
+        tabela
+                .setDefaultRenderer(Object.class,
+                        centerRenderer);
+
         return tableModel;
     }
-     
-     private void carregarDados() {
+
+    private void carregarDados() {
         try {
-            agente.retornaValor();
-                    try {
-                        DefaultTableModel tableModel = defaultTableCenter(tbCotacao);
-                        
-                        for (Economia economia : agente.getEcoList()) {
-                            tableModel.addRow(economia.toArray());
-                        }
-                        tbCotacao.setModel(tableModel);
+            double valor = agente.retornaValor();
+            try {
+                DefaultTableModel tableModel = defaultTableCenter(tbCotacao);
+
+                for (Economia economia : agente.getEcoList()) {
+                    tableModel.addRow(economia.toArray());
+                }
+                tbCotacao.setModel(tableModel);
 //            tbCotacao.setShowVerticalLines(false);
-                    } catch (ParseException  ex) {
-                        JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO ao LISTAR Economia Cotação", JOptionPane.ERROR_MESSAGE  );
-                    }
-        } catch (RemoteException  ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage()  );
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "ERRO ao LISTAR Economia Cotação", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage());
         } catch (DadosInsuficientes ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage()  );
-        } 
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -328,16 +429,24 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogJanelaPrincipal.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -345,14 +454,28 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogJanelaPrincipal dialog = new DialogJanelaPrincipal(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                try {
+                    DialogJanelaPrincipal dialog = new DialogJanelaPrincipal(new javax.swing.JFrame(), true);
+                    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                        @Override
+                        public void windowClosing(java.awt.event.WindowEvent e) {
+                            System.exit(0);
+                        }
+                    });
+                    dialog.setVisible(true);
+
+                } catch (RemoteException ex) {
+                    Logger.getLogger(DialogJanelaPrincipal.class
+                            .getName()).log(Level.SEVERE, null, ex);
+
+                } catch (DadosInsuficientes ex) {
+                    Logger.getLogger(DialogJanelaPrincipal.class
+                            .getName()).log(Level.SEVERE, null, ex);
+
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(DialogJanelaPrincipal.class
+                            .getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -361,6 +484,7 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> boxTipoMedia;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonConfirmar;
+    private javax.swing.JButton jButtonMockar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
