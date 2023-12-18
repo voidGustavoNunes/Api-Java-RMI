@@ -18,7 +18,16 @@ public class AgenteMM { //INDICA CORRETAMENETE A TENDENCIA DE EVOLUCAO DA COTACA
 
     Servidor servidor;
     List<Economia> ecoList = new ArrayList<>();
+    int tipoMedia;
 //LOGICA
+
+    public int getTipoMedia() {
+        return tipoMedia;
+    }
+
+    public void setTipoMedia(int tipoMedia) {
+        this.tipoMedia = tipoMedia;
+    }
     
     public void adicionaEconomia(Economia eco){
         ecoList.add(eco);
@@ -48,10 +57,10 @@ public class AgenteMM { //INDICA CORRETAMENETE A TENDENCIA DE EVOLUCAO DA COTACA
         } catch (Exception e) {
             e.getMessage();
         }
-        mediaTresUltimosValores = servidor.calcularMedia(1, ecoList);
-        mediaSeisUltimosValores = servidor.calcularMedia(2, ecoList);
-        mediaNoveUltimosValores = servidor.calcularMedia(3, ecoList);
-        tresMenosCotacaoValores = servidor.calcularMedia(4, ecoList);
+        mediaTresUltimosValores = servidor.calcularMedia(tipoMedia, ecoList);
+        mediaSeisUltimosValores = servidor.calcularMedia(tipoMedia, ecoList);
+        mediaNoveUltimosValores = servidor.calcularMedia(tipoMedia, ecoList);
+        tresMenosCotacaoValores = servidor.calcularMedia(tipoMedia, ecoList);
 
         if ((!(mediaSeisUltimosValores > mediaTresUltimosValores)) && (!(mediaNoveUltimosValores > mediaTresUltimosValores))) {
             valor = 1.00;

@@ -57,7 +57,7 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         tbCotacao = new javax.swing.JTable();
         jButtonAdd = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jComboBoxMedia = new javax.swing.JComboBox<>();
+        boxTipoMedia = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtResultado = new javax.swing.JTextPane();
         jLabel3 = new javax.swing.JLabel();
@@ -131,7 +131,7 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
 
         jLabel2.setText("Media:");
 
-        jComboBoxMedia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3 Dias Anteriores", "6 Dias Anteriores", "9 Dias Anteriores" }));
+        boxTipoMedia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "3 Dias Anteriores", "6 Dias Anteriores", "9 Dias Anteriores", "3 Dias - Cotação" }));
 
         jScrollPane2.setViewportView(txtResultado);
 
@@ -144,7 +144,6 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        txtCotInput.setText(" .    ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,7 +175,7 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtCotInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jComboBoxMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(boxTipoMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtDataInput, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonAdd)
@@ -198,7 +197,7 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
                         .addGap(6, 6, 6)
                         .addComponent(jLabel2))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jComboBoxMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(boxTipoMedia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jButtonAdd)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,6 +266,13 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, ex);
         }
+        
+        int tipo = 0;
+        if(boxTipoMedia.getSelectedIndex() == 0){tipo = 0;}
+        if(boxTipoMedia.getSelectedIndex() == 1){tipo = 1;}
+        if(boxTipoMedia.getSelectedIndex() == 2){tipo = 2;}
+        if(boxTipoMedia.getSelectedIndex() == 3){tipo = 3;}
+        agente.setTipoMedia(tipo);
         
         if (!(txtDataInput.equals(null)||txtDataInput.equals(""))&& !(txtCotInput.equals("")||txtCotInput.equals(null))) {
             Economia eco = new Economia(dataFormatada, cota);
@@ -352,9 +358,9 @@ public class DialogJanelaPrincipal extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> boxTipoMedia;
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonConfirmar;
-    private javax.swing.JComboBox<String> jComboBoxMedia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
